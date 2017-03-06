@@ -26,7 +26,7 @@ if [[ $CROSS_COMPILE == "Darwin" ]] ; then
 
   export CC=o64-clang
   export CXX=o64-clang++
-  export CROSS_COMPILE_HOST="x86_64-apple-darwin15"
+  export CROSS_COMPILE_HOST=$PLATFORM
   export PKG_CONFIG=$(which pkg-config)
 
   OUTPUT_TAG=$PLATFORM

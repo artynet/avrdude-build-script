@@ -28,16 +28,19 @@ fi
 tar xfv libelf-0.8.13.tar.gz
 
 cd libelf-0.8.13
+for p in ../libelf-0.8.13-patches/*.patch; do echo Applying $p; patch -p1 < $p; done
+autoreconf --force --install
 CONFARGS="--prefix=$PREFIX --disable-shared"
-if [[ $CROSS_COMPILE != "" ]] ; then
+if [[ $CROSS_COMPILE != Darwin ]] ; then
   CONFARGS="$CONFARGS --host=$CROSS_COMPILE_HOST"
   # solve bug with --host not being effective on second level directory
   export CC=$CROSS_COMPILE_HOST-gcc
   export AR=$CROSS_COMPILE_HOST-ar
   export RANLIB=$CROSS_COMPILE_HOST-ranlib
+else
+  CONFARGS="$CONFARGS --host=$CROSS_COMPILE_HOST"
 fi
 CFLAGS="-w -O2 $CFLAGS" CXXFLAGS="-w -O2 $CXXFLAGS" LDFLAGS="-s $LDFLAGS" ./configure $CONFARGS
 make -j 1
 make install
 cd ..
-

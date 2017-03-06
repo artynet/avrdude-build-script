@@ -47,7 +47,7 @@ sudo apt-get install gcc-mingw-w64-i686
 When building you must set the env var `CROSS_COMPILE` to `mingw` for example:
 
 ```
-CROSS_COMPILE=mingw ./package_avrdude.bash
+CROSS_COMPILE=mingw ./package-avrdude.bash
 ```
 
 cross compile with mingw has been tested on Ubuntu 14.04 (mingw-w64 4.8), different versions of mingw may behave differently and fail to build.
@@ -91,4 +91,3 @@ Consult the list of contributors [here](https://github.com/arduino/avrdude-build
 ### License
 
 The bash scripts are GPLv2 licensed. Every other software used by these bash scripts has its own license. Consult them to know the terms.
-

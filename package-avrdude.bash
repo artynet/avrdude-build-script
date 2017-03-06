@@ -20,7 +20,18 @@ OUTPUT_VERSION=6.3.0-arduino9
 export OS=`uname -o || uname`
 export TARGET_OS=$OS
 
-if [[ $CROSS_COMPILE == "mingw" ]] ; then
+if [[ $CROSS_COMPILE == "Darwin" ]] ; then
+
+  PLATFORM=$(o64-clang -v 2>&1 | grep Target | awk {'print $2'} | sed 's/[.].*//g')
+
+  export CC=o64-clang
+  export CXX=o64-clang++
+  export CROSS_COMPILE_HOST="x86_64-apple-darwin15"
+  export PKG_CONFIG=$(which pkg-config)
+
+  OUTPUT_TAG=$PLATFORM
+
+elif [[ $CROSS_COMPILE == "mingw" ]] ; then
 
   export CC="i686-w64-mingw32-gcc"
   export CXX="i686-w64-mingw32-g++"
@@ -55,13 +66,6 @@ elif [[ $OS == "Msys" || $OS == "Cygwin" ]] ; then
   export TARGET_OS="Windows"
   OUTPUT_TAG=i686-mingw32
 
-elif [[ $OS == "Darwin" ]] ; then
-
-  export PATH=/opt/local/libexec/gnubin/:/opt/local/bin:$PATH
-  export CC="gcc -arch i386 -mmacosx-version-min=10.5"
-  export CXX="g++ -arch i386 -mmacosx-version-min=10.5"
-  OUTPUT_TAG=i386-apple-darwin11
-
 else
 
   echo OS Not supported: $OS
@@ -94,4 +98,3 @@ else
   rm -r avrdude
 
 fi
-

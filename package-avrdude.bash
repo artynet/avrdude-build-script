@@ -22,14 +22,24 @@ export TARGET_OS=$OS
 
 if [[ $CROSS_COMPILE == "Darwin" ]] ; then
 
+  ## checks for the existence of o64-clang in your PATH
+  [ ! `which o64-clang` ] && echo -e "\nInsert o64-clang executable in your PATH variable !\n" && exit 0
+
   PLATFORM=$(o64-clang -v 2>&1 | grep Target | awk {'print $2'} | sed 's/[.].*//g')
 
   export CC=o64-clang
   export CXX=o64-clang++
   export CROSS_COMPILE_HOST=$PLATFORM
   export PKG_CONFIG=$(which pkg-config)
-
   OUTPUT_TAG=$PLATFORM
+
+elif [[ $CROSS_COMPILE == "arm" ]] ; then
+
+  export CC="arm-linux-gnueabihf-gcc"
+  export CXX="arm-linux-gnueabihf-g++"
+  export CROSS_COMPILE_HOST="arm-linux-gnueabihf"
+  export PKG_CONFIG=$(which pkg-config)
+  OUTPUT_TAG=armhf-pc-linux-gnu
 
 elif [[ $CROSS_COMPILE == "mingw" ]] ; then
 
@@ -44,6 +54,10 @@ elif [[ $OS == "GNU/Linux" ]] ; then
   export MACHINE=`uname -m`
   if [[ $MACHINE == "x86_64" ]] ; then
     OUTPUT_TAG=x86_64-pc-linux-gnu
+elif [[ $MACHINE == "x86_64" ]] && [[ $1 = "32" ]] ; then
+    export CC="gcc -m32"
+    export CXX="g++ -m32"
+    OUTPUT_TAG=i686-pc-linux-gnu
   elif [[ $MACHINE == "i686" ]] ; then
     OUTPUT_TAG=i686-pc-linux-gnu
   elif [[ $MACHINE == "armv7l" ]] ; then

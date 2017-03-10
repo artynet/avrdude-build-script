@@ -52,12 +52,12 @@ elif [[ $CROSS_COMPILE == "mingw" ]] ; then
 elif [[ $OS == "GNU/Linux" ]] ; then
 
   export MACHINE=`uname -m`
-  if [[ $MACHINE == "x86_64" ]] ; then
-    OUTPUT_TAG=x86_64-pc-linux-gnu
-  elif [[ $MACHINE == "x86_64" ]] && [[ $1 = "32" ]] ; then
+  if [[ $MACHINE == "x86_64" ]] && [[ $1 = "32" ]] ; then
     export CC="gcc -m32"
     export CXX="g++ -m32"
     OUTPUT_TAG=i686-pc-linux-gnu
+  elif [[ $MACHINE == "x86_64" ]] ; then
+    OUTPUT_TAG=x86_64-pc-linux-gnu
   elif [[ $MACHINE == "i686" ]] ; then
     OUTPUT_TAG=i686-pc-linux-gnu
   elif [[ $MACHINE == "armv7l" ]] ; then

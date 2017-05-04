@@ -32,6 +32,7 @@ if [[ $CROSS_COMPILE == "Darwin" ]] ; then
   export CROSS_COMPILE_HOST=$PLATFORM
   export PKG_CONFIG=$(which pkg-config)
   OUTPUT_TAG=$PLATFORM
+  export ARCH=osx
 
 elif [[ $CROSS_COMPILE == "arm" ]] ; then
 
@@ -40,6 +41,7 @@ elif [[ $CROSS_COMPILE == "arm" ]] ; then
   export CROSS_COMPILE_HOST="arm-linux-gnueabihf"
   export PKG_CONFIG=$(which pkg-config)
   OUTPUT_TAG=armhf-pc-linux-gnu
+  export ARCH=arm
 
 elif [[ $CROSS_COMPILE == "mingw" ]] ; then
 
@@ -48,6 +50,7 @@ elif [[ $CROSS_COMPILE == "mingw" ]] ; then
   export CROSS_COMPILE_HOST="i686-w64-mingw32"
   export TARGET_OS="Windows"
   OUTPUT_TAG=i686-w64-mingw32
+  export ARCH=windows
 
 elif [[ $OS == "GNU/Linux" ]] ; then
 
@@ -56,12 +59,16 @@ elif [[ $OS == "GNU/Linux" ]] ; then
     export CC="gcc -m32"
     export CXX="g++ -m32"
     OUTPUT_TAG=i686-pc-linux-gnu
+    export ARCH=linux32
   elif [[ $MACHINE == "x86_64" ]] ; then
     OUTPUT_TAG=x86_64-pc-linux-gnu
+    export ARCH=linux64
   elif [[ $MACHINE == "i686" ]] ; then
     OUTPUT_TAG=i686-pc-linux-gnu
+    export ARCH=linux32
   elif [[ $MACHINE == "armv7l" ]] ; then
     OUTPUT_TAG=armhf-pc-linux-gnu
+    export ARCH=arm
   else
     echo Linux Machine not supported: $MACHINE
     exit 1
@@ -87,7 +94,7 @@ else
 
 fi
 
-rm -rf avrdude-6.3 libusb-1.0.20 libusb-compat-0.1.5 libusb-win32-bin-1.2.6.0 libelf-0.8.13 objdir
+# rm -rf avrdude-6.3 libusb-1.0.20 libusb-compat-0.1.5 libusb-win32-bin-1.2.6.0 libelf-0.8.13
 
 ./libusb-1.0.20.build.bash
 ./libusb-compat-0.1.5.build.bash
@@ -96,19 +103,26 @@ rm -rf avrdude-6.3 libusb-1.0.20 libusb-compat-0.1.5 libusb-win32-bin-1.2.6.0 li
 
 # if producing a windows build, compress as zip and
 # copy *toolchain-precompiled* content to any folder containing a .exe
+
 if [[ ${OUTPUT_TAG} == *"mingw"* ]] ; then
 
-  cp libusb-win32-bin-1.2.6.0/bin/x86/libusb0_x86.dll objdir/bin/libusb0.dll
-  rm -f avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.zip
-  cp -a objdir avrdude
-  zip -r avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.zip avrdude
-  rm -r avrdude
-
-else
-
-  rm -f avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.tar.bz2
-  cp -a objdir avrdude
-  tar -cjvf avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.tar.bz2 avrdude
-  rm -r avrdude
+    cp libusb-win32-bin-1.2.6.0/bin/x86/libusb0_x86.dll objdir/windows/bin/libusb0.dll
 
 fi
+
+# if [[ ${OUTPUT_TAG} == *"mingw"* ]] ; then
+#
+#   cp libusb-win32-bin-1.2.6.0/bin/x86/libusb0_x86.dll objdir/windows/bin/libusb0.dll
+#   rm -f avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.zip
+#   cp -a objdir avrdude
+#   zip -r avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.zip avrdude
+#   rm -r avrdude
+#
+# else
+#
+#   rm -f avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.tar.bz2
+#   cp -a objdir avrdude
+#   tar -cjvf avrdude-${OUTPUT_VERSION}-${OUTPUT_TAG}.tar.bz2 avrdude
+#   rm -r avrdude
+#
+# fi

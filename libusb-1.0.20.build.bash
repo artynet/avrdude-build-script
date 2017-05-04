@@ -15,8 +15,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-mkdir -p objdir
-cd objdir
+mkdir -p objdir/$ARCH
+cd objdir/$ARCH
 PREFIX=`pwd`
 cd -
 
@@ -36,4 +36,3 @@ CFLAGS="-w -O2 $CFLAGS" CXXFLAGS="-w -O2 $CXXFLAGS" LDFLAGS="-s $LDFLAGS" ./conf
 make -j 1
 make install
 cd ..
-

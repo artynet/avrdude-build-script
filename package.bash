@@ -37,6 +37,10 @@ CROSS_COMPILE="mingw" ./package-avrdude.bash
 ./clean_all_avrdude.bash
 CROSS_COMPILE="arm" ./package-avrdude.bash
 
+# aarch64
+./clean_all_avrdude.bash
+CROSS_COMPILE="aarch64" ./package-avrdude.bash
+
 # osx
 ./clean_all_avrdude.bash
 CROSS_COMPILE="Darwin" ./package-avrdude.bash

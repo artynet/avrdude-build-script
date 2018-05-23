@@ -43,6 +43,15 @@ elif [[ $CROSS_COMPILE == "arm" ]] ; then
   OUTPUT_TAG=armhf-pc-linux-gnu
   export ARCH=arm
 
+elif [[ $CROSS_COMPILE == "aarch64" ]] ; then
+
+  export CC="aarch64-linux-gnu-gcc"
+  export CXX="aarch64-linux-gnu-g++"
+  export CROSS_COMPILE_HOST="aarch64-linux-gnu"
+  export PKG_CONFIG=$(which pkg-config)
+  OUTPUT_TAG=aarch64-pc-linux-gnu
+  export ARCH=aarch64
+
 elif [[ $CROSS_COMPILE == "mingw" ]] ; then
 
   export CC="i686-w64-mingw32-gcc"

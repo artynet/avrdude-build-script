@@ -17,6 +17,13 @@
               "checksum": "SHA-256:%%SHA_ARM%%"
             },
             {
+              "host": "aarch64-linux-gnu",
+              "url": "http://download.arduino.org/tools/%%FILENAME_AARCH64%%",
+              "archiveFileName": "%%FILENAME_AARCH64%%",
+              "size": "%%SIZE_FILENAME_AARCH64%%",
+              "checksum": "SHA-256:%%SHA_FILENAME_AARCH64%%"
+            },
+            {
               "host": "x86_64-linux-gnu",
               "url": "http://download.arduino.org/tools/%%FILENAME_LINUX64%%",
               "archiveFileName": "%%FILENAME_LINUX64%%",

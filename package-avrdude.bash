@@ -52,12 +52,21 @@ elif [[ $CROSS_COMPILE == "mingw" ]] ; then
   OUTPUT_TAG=i686-w64-mingw32
   export ARCH=windows
 
+elif [[ $CROSS_COMPILE == "arm64" ]] ; then
+
+  export CC="aarch64-linux-gnu-gcc"
+  export CXX="aarch64-linux-gnu-g++"
+  export CROSS_COMPILE_HOST="aarch64-linux-gnu"
+  export PKG_CONFIG=$(which pkg-config)
+  OUTPUT_TAG=aarch64-pc-linux-gnu
+  export ARCH=arm64
+
 elif [[ $OS == "GNU/Linux" ]] ; then
 
   export MACHINE=`uname -m`
   if [[ $MACHINE == "x86_64" ]] && [[ $1 = "32" ]] ; then
-    export CC="gcc -m32"
-    export CXX="g++ -m32"
+    export CC="i686-linux-gnu-gcc"
+    export CXX="i686-linux-gnu-g++"
     OUTPUT_TAG=i686-pc-linux-gnu
     export ARCH=linux32
   elif [[ $MACHINE == "x86_64" ]] ; then

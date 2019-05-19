@@ -21,11 +21,11 @@ export OS=`uname -o || uname`
 
 #add osxcross, mingw and arm-linux-gnueabihf paths to PATH
 
-#linux 64
+# linux 64
 ./clean_all_avrdude.bash
 ./package-avrdude.bash
 
-#linux 32
+# linux 32
 ./clean_all_avrdude.bash
 ./package-avrdude.bash 32
 
@@ -37,12 +37,19 @@ CROSS_COMPILE="mingw" ./package-avrdude.bash
 ./clean_all_avrdude.bash
 CROSS_COMPILE="arm" ./package-avrdude.bash
 
+# arm64
+./clean_all_avrdude.bash
+CROSS_COMPILE="arm64" ./package-avrdude.bash
+
 # osx
 ./clean_all_avrdude.bash
 CROSS_COMPILE="Darwin" ./package-avrdude.bash
 
 # final clean
 ./clean_all_avrdude.bash
+
+# removing source dirs
+./clean_all_dirs.bash
 
 package_index=`cat package_index.template | sed s/%%VERSION%%/${OUTPUT_VERSION}/`
 
